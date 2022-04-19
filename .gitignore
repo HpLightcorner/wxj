@@ -72,3 +72,4 @@ _deps
 ### Artifacts ###
 .DS_Store
 build/
+example/wxj-example*
