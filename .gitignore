@@ -31,6 +31,7 @@
 *.exe
 *.out
 *.app
+*.pdb
 
 ### CMake ###
 CMakeLists.txt.user

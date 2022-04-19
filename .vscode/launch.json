@@ -2,16 +2,31 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Example",
+            "name": "Debug (LLDB)",
             "type": "cppdbg",
+            "MIMode": "lldb",
             "request": "launch",
+
             // Resolved by CMake Tools:
             "program": "${command:cmake.launchTargetPath}",
+
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/example",
+            "cwd": "${workspaceFolder}",
             "externalConsole": false,
-            "MIMode": "lldb"
+        },
+        {
+            "name": "Debug (MSVC)",
+            "type": "cppvsdbg",
+            "request": "launch",
+
+            // Resolved by CMake Tools:
+            "program": "${command:cmake.launchTargetPath}",
+
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
         }
     ]
 }

@@ -23,7 +23,8 @@ std::function<void()> App::addJsonDocument([[maybe_unused]] std::string tag, [[m
 
 bool App::OnInit()
 {
-    std::filesystem::path path(wxStandardPaths::Get().GetExecutablePath());
+    // Make sure App is using its current path as the working directory
+    std::filesystem::path path(wxStandardPaths::Get().GetExecutablePath().ToStdString());
     wxSetWorkingDirectory(path.parent_path().string());
 
     // Load app file
@@ -49,11 +50,11 @@ bool App::OnInit()
     long style;
     if (config.settings.frameless)
     {
-        style = wxFULLSCREEN_ALL;
+        style = wxNO_BORDER | wxCLIP_CHILDREN;
     }
     else
     {
-        style = wxCLOSE_BOX | wxCAPTION;
+        style = wxNO_BORDER | wxCLOSE_BOX | wxCAPTION | wxCLIP_CHILDREN;
     }
 
     // The Frame
@@ -85,5 +86,8 @@ bool App::OnInit()
 
     // Finally, show the frame
     m_frame->Show(true);
+
+    // Make Sure to (re)size 
+    m_frame->SendSizeEvent();
     return true;
 }
