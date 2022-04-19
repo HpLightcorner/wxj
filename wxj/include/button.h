@@ -7,7 +7,8 @@ namespace wxj
     class wxjButton : public wxWindow
     {
     public:
-        enum class State {
+        enum class State
+        {
             Disabled,
             Current,
             Pressed,
@@ -46,7 +47,7 @@ namespace wxj
         };
 
         wxjButton(wxWindow *parent, Settings settings);
-    
+
     protected:
         virtual void onButtonEvent();
 

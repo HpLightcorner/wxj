@@ -21,6 +21,21 @@ void from_json(const nlohmann::json &j, wxPoint &p)
 
 namespace wxj
 {
+    void from_json(const json &j, wxj::Bind &b)
+    {
+        j.at("tag").get_to(b.tag);
+        j.at("pointer").get_to(b.pointer);
+    }
+
+    void from_json(const json &j, wxj::Bindings &b)
+    {
+        for (const auto &entry : j)
+        {
+            auto bind = entry.get<wxj::Bind>();
+            b.push_back(bind);
+        }
+    }
+
     void from_json(const json &j, wxj::App::Settings &s)
     {
         if (j.contains("pos"))
@@ -79,6 +94,17 @@ namespace wxj
         s.size = j.at("size").get<wxj::Size>();
     }
 
+    void from_json(const json &j, wxjLabel::Settings &s)
+    {
+        if (j.contains("bindings"))
+        {
+            s.bindings = j.at("bindings").get<wxj::Bindings>();
+        }
+        s.label = j.at("label");
+        s.pos = j.at("pos").get<wxj::Point>();
+        s.size = j.at("size").get<wxj::Size>();
+    }
+
     void from_json(const json &j, Layout &l)
     {
         for (const auto &element : j)
@@ -90,14 +116,18 @@ namespace wxj
                 {
                 case Type::Button:
                 {
-                    auto b = element.get<wxjButton::Settings>();
-                    l.push_back({Type::Button, b});
+                    auto s = element.get<wxjButton::Settings>();
+                    l.push_back({Type::Button, s});
                 }
                 break;
                 case Type::Image:
                     break;
-                case Type::Text:
-                    break;
+                case Type::Label:
+                {
+                    auto s = element.get<wxjLabel::Settings>();
+                    l.push_back({Type::Label, s});
+                }
+                break;
                 }
             }
         }

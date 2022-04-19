@@ -50,7 +50,7 @@ namespace wxj
          * @param j pointer to use when accessing data
          * @return std::function<void()>
          */
-        std::function<void()> addJsonDocument(std::string tag, json *j);
+        Update addJsonDocument(std::string tag, json *j);
 
     private:
         bool OnInit() final;

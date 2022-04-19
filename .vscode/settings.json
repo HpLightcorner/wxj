@@ -94,6 +94,13 @@
         "valarray": "cpp",
         "vector": "cpp",
         "regex": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "csignal": "cpp",
+        "queue": "cpp",
+        "random": "cpp",
+        "set": "cpp",
+        "span": "cpp",
+        "any": "cpp",
+        "typeindex": "cpp"
     }
 }

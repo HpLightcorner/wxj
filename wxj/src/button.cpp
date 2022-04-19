@@ -129,4 +129,15 @@ void wxjButton::mouseEnterWindow([[maybe_unused]] wxMouseEvent &event)
 
 void wxjButton::onButtonEvent()
 {
+    if (m_settings.bind)
+    {
+        auto &reg = FunctionRegistry::instance();
+        auto tag = m_settings.bind.value();
+        auto func = reg.get(tag);
+
+        if (func)
+        {
+            func.value()();
+        }
+    }
 }

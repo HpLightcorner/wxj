@@ -10,14 +10,29 @@ using namespace wxj;
 
 void App::addFunction([[maybe_unused]] std::string tag, [[maybe_unused]] std::function<void()> func)
 {
+    auto &reg = FunctionRegistry::instance();
+    reg.add(tag, func);
 }
 
-std::function<void()> App::addJsonDocument([[maybe_unused]] std::string tag, [[maybe_unused]] json *j)
+Update App::addJsonDocument([[maybe_unused]] std::string tag, [[maybe_unused]] json *j)
 {
-    auto lambda = []() {
+    auto lambda = [tag]()
+    {
+        auto &reg = ListenerRegistry::instance();
+        auto listeners = reg.get(tag);
 
+        // Update all Listeners on the given tag
+        if (listeners)
+        {
+            for (const auto &listener : listeners.value())
+            {
+                listener->update();
+            }
+        }
     };
 
+    auto &reg = DocumentRegistry::instance();
+    reg.add(tag, j);
     return lambda;
 }
 
@@ -79,7 +94,8 @@ bool App::OnInit()
             break;
         case Type::Image:
             break;
-        case Type::Text:
+        case Type::Label:
+            new wxjLabel(drawPane, std::get<wxjLabel::Settings>(settings));
             break;
         }
     }
@@ -87,7 +103,7 @@ bool App::OnInit()
     // Finally, show the frame
     m_frame->Show(true);
 
-    // Make Sure to (re)size 
+    // Make Sure to (re)size
     m_frame->SendSizeEvent();
     return true;
 }

@@ -3,6 +3,7 @@
 #include "types.h"
 #include "app.h"
 #include "button.h"
+#include "label.h"
 
 #include <filesystem>
 #include <memory>
@@ -11,12 +12,14 @@
 
 namespace wxj
 {
-    using Settings = std::variant<wxjButton::Settings>;
+    using Settings = std::variant<wxjButton::Settings, wxjLabel::Settings>;
     using Element = std::pair<Type, Settings>;
     using Layout = std::vector<Element>;
 
-    struct Config {
-        Config() {
+    struct Config
+    {
+        Config()
+        {
             name = "wxJ";
         }
 

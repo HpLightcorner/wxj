@@ -41,6 +41,8 @@ set(WXJGUI_HEADER_FILES
     include/button.h
     include/common.h
     include/dialogs.h
+    include/registry.h
+    include/listener.h
 )
 source_group("Header Files" FILES ${WXJGUI_HEADER_FILES})
 
@@ -50,6 +52,7 @@ set(WXJGUI_SOURCE_FILES
     src/app.cpp
     src/button.cpp
     src/dialogs.cpp
+    src/label.cpp
 )
 source_group("Source Files" FILES ${WXJGUI_SOURCE_FILES})
 
@@ -65,7 +68,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
 #
 # Link Libraries 
-target_link_libraries(${PROJECT_NAME} PUBLIC wxmono nlohmann_json)
+target_link_libraries(${PROJECT_NAME} PUBLIC wxmono nlohmann_json fmt::fmt)
 
 #
 # Include Directories
