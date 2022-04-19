@@ -1,0 +1,56 @@
+{
+    "name": "wxJ Framework",
+
+    "settings": {
+        "size": {
+            "width": 960,
+            "height": 600
+        },
+
+        "bg": "./ressources/bg.png",
+        "frameless": false
+    },
+
+    "layout": [
+        {
+            "type": "button",
+            "label": "Button 2",
+            "bind": "onLoadSettings",
+
+            "bg": {
+                "default": "./ressources/button.png",
+                "pressed": "./ressources/button2.jpg",
+                "current": "./ressources/button3.jpg"
+            },
+
+            "pos": {
+                "x": 450,
+                "y": 10
+            },
+            
+            "size": {
+                "width": 50,
+                "height": 50
+            }
+        },
+        {
+            "type": "button",
+            "label": "Button 1",
+            "onClick": "loadOvenplan2",
+            "bg": {
+                "default": "./ressources/button.png",
+                "pressed": "./ressources/button2.jpg"
+            },
+
+            "pos": {
+                "x": 10,
+                "y": 10
+            },
+            
+            "size": {
+                "width": 50,
+                "height": 50
+            }
+        }
+    ]
+}
