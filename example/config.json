@@ -36,6 +36,27 @@
         {
             "type": "label",
             "pos": {
+                "x": 100,
+                "y": 60
+            },
+            
+            "size": {
+                "width": 50,
+                "height": 50
+            },
+
+            "bindings": [
+                {
+                    "tag": "data",
+                    "pointer": "/cs2"
+                }
+            ],
+
+            "label": "CS2: {}"
+        },
+        {
+            "type": "label",
+            "pos": {
                 "x": 10,
                 "y": 500
             },
