@@ -11,6 +11,7 @@ public:
         auto &json = m_doc->json();
         json["name"] = name;
         json["counter"] = 0;
+        json["cs2"] = 11;
 
         // Register the Document within wxj such that the document can be accessed from the
         // config document. Be careful, registerDocument takes ownership of the document!
