@@ -6,6 +6,8 @@
 #include <filesystem>
 
 #include "types.h"
+#include "document.h"
+#include "binding.h"
 
 namespace wxj
 {
@@ -37,25 +39,13 @@ namespace wxj
          */
         virtual bool createApplication() = 0;
 
-        /**
-         * @brief Expose a function to the JSON settings file
-         * @param tag
-         * @param func
-         */
-        void addFunction(std::string tag, std::function<void()> func);
-
-        /**
-         * @brief Expose a json document to the JSON settings file
-         * @param tag the tag to identify the document in the settings file
-         * @param j pointer to use when accessing data
-         * @return std::function<void()>
-         */
-        Update addJsonDocument(std::string tag, json *j);
-
     private:
         bool OnInit() final;
         wxFrame *m_frame;
     };
+
+    void registerDocument(Document::Pointer doc);
+    void registerBinding(std::string tag, Binding::Pointer b);
 }
 
 #define WXJ_IMPLEMENT_APP(app) wxIMPLEMENT_APP(app)

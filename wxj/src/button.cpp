@@ -1,5 +1,7 @@
 #include "button.h"
 #include "common.h"
+#include "binding.h"
+
 using namespace wxj;
 
 BEGIN_EVENT_TABLE(wxjButton, wxPanel)
@@ -87,9 +89,6 @@ void wxjButton::render(wxDC &dc)
         wxRect rect(m_settings.size);
         dc.DrawLabel(m_settings.label.value(), rect, wxALIGN_CENTER);
     }
-
-    // wxRect rect(m_settings.size);
-    // dc.DrawLabel(label, bitmap, rect, wxALIGN_CENTRE_HORIZONTAL | wxALIGN_CENTRE_VERTICAL);
 }
 
 void wxjButton::mouseDown([[maybe_unused]] wxMouseEvent &event)
@@ -131,13 +130,13 @@ void wxjButton::onButtonEvent()
 {
     if (m_settings.bind)
     {
-        auto &reg = FunctionRegistry::instance();
+        auto &reg = BindingRegistry::instance();
         auto tag = m_settings.bind.value();
-        auto func = reg.get(tag);
+        auto binding = reg.get(tag);
 
-        if (func)
+        if (binding)
         {
-            func.value()();
+            binding.value()->notify(tag);
         }
     }
 }

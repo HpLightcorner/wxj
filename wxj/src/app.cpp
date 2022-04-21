@@ -3,37 +3,26 @@
 #include "button.h"
 #include "config.h"
 #include "dialogs.h"
+#include "document.h"
+#include "registry.h"
 
 #include "wx/stdpaths.h"
 
 using namespace wxj;
 
-void App::addFunction([[maybe_unused]] std::string tag, [[maybe_unused]] std::function<void()> func)
+void wxj::registerDocument(Document::Pointer doc)
 {
-    auto &reg = FunctionRegistry::instance();
-    reg.add(tag, func);
+    auto &reg = DocumentRegistry::instance();
+    reg.add(doc->getTag(), doc);
 }
 
-Update App::addJsonDocument([[maybe_unused]] std::string tag, [[maybe_unused]] json *j)
+void wxj::registerBinding(std::string tag, Binding::Pointer b)
 {
-    auto lambda = [tag]()
-    {
-        auto &reg = ListenerRegistry::instance();
-        auto listeners = reg.get(tag);
+    auto &reg = BindingRegistry::instance();
+    auto glue = std::make_shared<Glue>();
+    glue->attach(b);
 
-        // Update all Listeners on the given tag
-        if (listeners)
-        {
-            for (const auto &listener : listeners.value())
-            {
-                listener->update();
-            }
-        }
-    };
-
-    auto &reg = DocumentRegistry::instance();
-    reg.add(tag, j);
-    return lambda;
+    reg.add(tag, glue);
 }
 
 bool App::OnInit()

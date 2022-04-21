@@ -1,9 +1,10 @@
 #pragma once
 #include "types.h"
+#include "observer.h"
 
 namespace wxj
 {
-    class wxjLabel : public wxWindow, public Listener
+    class wxjLabel : public wxWindow, public IObserver<std::string>
     {
     public:
         struct Settings
@@ -21,13 +22,11 @@ namespace wxj
         };
 
         wxjLabel(wxWindow *parent, Settings settings);
+        ~wxjLabel();
 
-        /**
-         * @brief Force repaint
-         */
         void paintNow();
 
-        void update() final;
+        void update(std::string tag) final;
 
     private:
         void paintEvent(wxPaintEvent &evt);

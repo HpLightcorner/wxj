@@ -1,9 +1,10 @@
 #include "label.h"
+#include "document.h"
+
 #include "fmt/core.h"
 #include "fmt/format.h"
 #include "fmt/args.h"
 
-#include <unordered_set>
 using namespace wxj;
 
 BEGIN_EVENT_TABLE(wxj::wxjLabel, wxPanel)
@@ -20,16 +21,34 @@ wxjLabel::wxjLabel(wxWindow *parent, Settings settings) : wxWindow(parent, wxID_
     // Register as listener if documents of given tag change
     if (m_settings.bindings)
     {
-        auto &reg = ListenerRegistry::instance();
-        std::unordered_set<std::string> tags;
+
+        auto &reg = DocumentRegistry::instance();
         for (const auto &binding : m_settings.bindings.value())
         {
-            tags.insert(binding.tag);
+            // Get the document
+            auto doc = reg.get(binding.tag);
+            if (doc)
+            {
+                // Attach the label as an observer
+                doc.value()->attach(this);
+            }
         }
+    }
+}
 
-        for (const auto &tag : tags)
+wxjLabel::~wxjLabel()
+{
+    // Make sure to de-register the label from the document
+    if (m_settings.bindings)
+    {
+        auto &reg = DocumentRegistry::instance();
+        for (const auto &binding : m_settings.bindings.value())
         {
-            reg.add(tag, this);
+            auto doc = reg.get(binding.tag);
+            if (doc)
+            {
+                doc.value()->detach(this);
+            }
         }
     }
 }
@@ -64,15 +83,20 @@ void wxjLabel::render(wxDC &dc)
 
         for (const auto &binding : m_settings.bindings.value())
         {
-            auto t = reg.get(binding.tag);
-            if (t)
+            if (auto opt = reg.get(binding.tag))
             {
-                auto d = t.value();
-                auto ptr = json::json_pointer(binding.pointer);
+                auto doc = opt.value();
 
-                if (d->contains(ptr))
+                // Lock the document while accessing underlying JSON
+                doc->lock();
+                auto json = doc->json();
+
+                // Build a dynamic list of arguments for fmt
+                auto ptr = Json::json_pointer(binding.pointer);
+
+                if (json.contains(ptr))
                 {
-                    auto v = d->at(ptr);
+                    auto v = json.at(ptr);
 
                     // Limit Handling of JSON Data to supported formats
                     if (v.is_boolean())
@@ -88,6 +112,9 @@ void wxjLabel::render(wxDC &dc)
                         args.push_back(v.get<std::string>());
                     }
                 }
+
+                // Make sure to unlock
+                doc->unlock();
             }
         }
         label = fmt::vformat(label, args);
@@ -97,7 +124,7 @@ void wxjLabel::render(wxDC &dc)
     dc.DrawLabel(label, rect, wxALIGN_CENTER);
 }
 
-void wxjLabel::update()
+void wxjLabel::update([[maybe_unused]] std::string tag)
 {
     Refresh();
 }

@@ -42,7 +42,9 @@ set(WXJGUI_HEADER_FILES
     include/common.h
     include/dialogs.h
     include/registry.h
-    include/listener.h
+    include/observer.h
+    include/document.h 
+    include/binding.h
 )
 source_group("Header Files" FILES ${WXJGUI_HEADER_FILES})
 
@@ -53,6 +55,7 @@ set(WXJGUI_SOURCE_FILES
     src/button.cpp
     src/dialogs.cpp
     src/label.cpp
+    src/document.cpp
 )
 source_group("Source Files" FILES ${WXJGUI_SOURCE_FILES})
 

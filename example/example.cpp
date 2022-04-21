@@ -1,47 +1,63 @@
 #include "wxj.h"
 
-class MyApp : public wxj::App
+class MyApp : public wxj::App, wxj::Binding
 {
 public:
     MyApp() : m_counter(0) {}
+
+    void update(std::string tag) final
+    {
+        // Lock the document while editing
+        m_data->lock();
+
+        // Convinient JSON-Access
+        auto &json = m_data->json();
+
+        if (tag == "increaseCounter")
+        {
+            m_counter++;
+        }
+        if (tag == "decreaseCounter")
+        {
+            m_counter--;
+        }
+        json["counter"] = m_counter;
+
+        // Unlock document
+        m_data->unlock();
+
+        // Notify wxj about changes made in the document
+        m_data->notify();
+    }
 
 protected:
     bool createApplication() final
     {
         // We expose functions using a string-tag
-        // The user can then bind events to these functions
-        auto f1 = std::bind(&MyApp::increaseCounter, this);
-        addFunction("increaseCounter", f1);
+        // Be careful that register binding stores a pointer to the binding
+        // If you delete the binding (e.g. this class) at runtime, make sure to unregister first
+        // Use unique identifiers
+        wxj::registerBinding("increaseCounter", this);
+        wxj::registerBinding("decreaseCounter", this);
 
-        auto f2 = std::bind(&MyApp::decreaseCounter, this);
-        addFunction("decreaseCounter", f2);
+        // Create a new document named data holding a JSON object to interact with the UI
+        // Make sure that you are using a unique tag for each document
+        m_data = std::make_shared<wxj::Document>("data");
 
-        // When adding a json document, we get a function pointer in exchange
-        // Whenever we change the json document, we can call the function pointer
-        // to inform wxj to update any linked GUI elements
-        m_update = addJsonDocument("data", &m_data);
-        m_data["counter"] = m_counter;
-        m_data["name"] = "My App";
+        // Register the Document within wxj such that the document can be accessed from the
+        // config document. Be careful, registerDocument takes ownership of the document!
+        wxj::registerDocument(m_data);
+
+        auto &json = m_data->json();
+        json["counter"] = m_counter;
+        json["name"] = "My App";
+
         return true;
     }
 
 private:
-    void increaseCounter()
-    {
-        m_counter++;
-        m_data["counter"] = m_counter;
-        m_update();
-    }
-    void decreaseCounter()
-    {
-        m_counter--;
-        m_data["counter"] = m_counter;
-        m_update();
-    }
-
-    wxj::json m_data;
+    wxj::Document::Pointer m_data;
     int m_counter;
-    wxj::Update m_update;
 };
 
 // Finally implement the app

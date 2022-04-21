@@ -3,8 +3,7 @@
     "configurations": [
         {
             "name": "Debug (LLDB)",
-            "type": "cppdbg",
-            "MIMode": "lldb",
+            "type": "lldb",
             "request": "launch",
 
             // Resolved by CMake Tools:

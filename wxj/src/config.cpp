@@ -1,7 +1,7 @@
 #include "config.h"
 #include <fstream>
 
-void from_json(const nlohmann::json &j, wxSize &s)
+void from_json(const wxj::Json &j, wxSize &s)
 {
     int width;
     int height;
@@ -13,7 +13,7 @@ void from_json(const nlohmann::json &j, wxSize &s)
     s.SetHeight(height);
 }
 
-void from_json(const nlohmann::json &j, wxPoint &p)
+void from_json(const wxj::Json &j, wxPoint &p)
 {
     j.at("x").get_to(p.x);
     j.at("y").get_to(p.y);
@@ -21,13 +21,17 @@ void from_json(const nlohmann::json &j, wxPoint &p)
 
 namespace wxj
 {
-    void from_json(const json &j, wxj::Bind &b)
+    NLOHMANN_JSON_SERIALIZE_ENUM(Type, {{Type::Button, "button"},
+                                        {Type::Image, "image"},
+                                        {Type::Label, "label"}})
+
+    void from_json(const Json &j, wxj::Bind &b)
     {
         j.at("tag").get_to(b.tag);
         j.at("pointer").get_to(b.pointer);
     }
 
-    void from_json(const json &j, wxj::Bindings &b)
+    void from_json(const Json &j, wxj::Bindings &b)
     {
         for (const auto &entry : j)
         {
@@ -36,7 +40,7 @@ namespace wxj
         }
     }
 
-    void from_json(const json &j, wxj::App::Settings &s)
+    void from_json(const Json &j, wxj::App::Settings &s)
     {
         if (j.contains("pos"))
         {
@@ -59,7 +63,7 @@ namespace wxj
         }
     }
 
-    void from_json(const json &j, wxjButton::Bg &bg)
+    void from_json(const Json &j, wxjButton::Bg &bg)
     {
         bg._default = j.at("default").get<Path>();
         if (j.contains("current"))
@@ -76,7 +80,7 @@ namespace wxj
         }
     }
 
-    void from_json(const json &j, wxjButton::Settings &s)
+    void from_json(const Json &j, wxjButton::Settings &s)
     {
         if (j.contains("bind"))
         {
@@ -94,7 +98,7 @@ namespace wxj
         s.size = j.at("size").get<wxj::Size>();
     }
 
-    void from_json(const json &j, wxjLabel::Settings &s)
+    void from_json(const Json &j, wxjLabel::Settings &s)
     {
         if (j.contains("bindings"))
         {
@@ -105,7 +109,7 @@ namespace wxj
         s.size = j.at("size").get<wxj::Size>();
     }
 
-    void from_json(const json &j, Layout &l)
+    void from_json(const Json &j, Layout &l)
     {
         for (const auto &element : j)
         {
@@ -133,7 +137,7 @@ namespace wxj
         }
     }
 
-    void from_json(const json &j, wxj::Config &c)
+    void from_json(const Json &j, wxj::Config &c)
     {
         if (j.contains("name"))
         {
@@ -157,7 +161,7 @@ std::optional<wxj::Config> wxj::fromFile(std::filesystem::path path)
         try
         {
             std::ifstream file(path);
-            json j = json::parse(file);
+            Json j = Json::parse(file);
 
             return j.get<Config>();
         }
