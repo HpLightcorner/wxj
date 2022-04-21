@@ -6,7 +6,7 @@ namespace wxj
     class IObserver
     {
     public:
-        using Pointer = IObserver<T> *;
+        using WeakPointer = IObserver<T> *;
         virtual ~IObserver(){};
         virtual void update(T message_from_subject) = 0;
     };

@@ -45,7 +45,8 @@ namespace wxj
     };
 
     void registerDocument(Document::Pointer doc);
-    void registerBinding(std::string tag, Binding::Pointer b);
+    void registerBinding(std::string tag, Binding::WeakPointer b);
+    void unregisterDocument(Document::Pointer doc);
 }
 
 #define WXJ_IMPLEMENT_APP(app) wxIMPLEMENT_APP(app)

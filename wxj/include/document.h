@@ -5,6 +5,7 @@
 #include "registry.h"
 
 #include <list>
+#include <mutex>
 
 namespace wxj
 {
@@ -14,6 +15,7 @@ namespace wxj
         using Pointer = std::shared_ptr<Document>;
 
         Document(String tag);
+        ~Document();
         void lock();
         void unlock();
 

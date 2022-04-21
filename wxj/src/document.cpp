@@ -6,6 +6,10 @@ Document::Document(String tag) : m_tag(tag)
 {
 }
 
+Document::~Document()
+{
+}
+
 Json &Document::json()
 {
     return m_doc;

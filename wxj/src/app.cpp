@@ -16,7 +16,13 @@ void wxj::registerDocument(Document::Pointer doc)
     reg.add(doc->getTag(), doc);
 }
 
-void wxj::registerBinding(std::string tag, Binding::Pointer b)
+void wxj::unregisterDocument(Document::Pointer doc)
+{
+    auto &reg = DocumentRegistry::instance();
+    reg.remove(doc->getTag());  
+}
+
+void wxj::registerBinding(std::string tag, Binding::WeakPointer b)
 {
     auto &reg = BindingRegistry::instance();
     auto glue = std::make_shared<Glue>();
