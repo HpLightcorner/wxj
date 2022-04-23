@@ -1,5 +1,8 @@
 #pragma once
 
+#include <list>
+#include <algorithm>
+
 namespace wxj
 {
     template <typename T>

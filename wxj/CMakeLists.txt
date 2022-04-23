@@ -45,6 +45,7 @@ set(WXJGUI_HEADER_FILES
     include/observer.h
     include/document.h 
     include/binding.h
+    include/callbacks.h
 )
 source_group("Header Files" FILES ${WXJGUI_HEADER_FILES})
 
@@ -56,6 +57,8 @@ set(WXJGUI_SOURCE_FILES
     src/dialogs.cpp
     src/label.cpp
     src/document.cpp
+    src/callbacks.cpp
+    src/binding.cpp
 )
 source_group("Source Files" FILES ${WXJGUI_SOURCE_FILES})
 

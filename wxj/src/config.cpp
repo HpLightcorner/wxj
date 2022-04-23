@@ -25,6 +25,10 @@ namespace wxj
                                         {Type::Image, "image"},
                                         {Type::Label, "label"}})
 
+    NLOHMANN_JSON_SERIALIZE_ENUM(Align, {{Align::Left, "left"},
+                                         {Align::Center, "center"},
+                                         {Align::Right, "right"}})
+
     void from_json(const Json &j, wxj::Bind &b)
     {
         j.at("tag").get_to(b.tag);
@@ -98,11 +102,31 @@ namespace wxj
         s.size = j.at("size").get<wxj::Size>();
     }
 
+    void from_json(const Json &j, Font &f)
+    {
+        if (j.contains("facename"))
+        {
+            f.facename = j.at("facename").get<std::string>();
+        }
+        if (j.contains("height"))
+        {
+            f.height = j.at("height").get<int>();
+        }
+        if (j.contains("align"))
+        {
+            f.align = j.at("align").get<Align>();
+        }
+    }
+
     void from_json(const Json &j, wxjLabel::Settings &s)
     {
         if (j.contains("bindings"))
         {
             s.bindings = j.at("bindings").get<wxj::Bindings>();
+        }
+        if (j.contains("font"))
+        {
+            s.font = j.at("font").get<wxj::Font>();
         }
         s.label = j.at("label");
         s.pos = j.at("pos").get<wxj::Point>();

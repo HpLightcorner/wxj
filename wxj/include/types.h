@@ -19,11 +19,26 @@ namespace wxj
     using OptPoint = std::optional<Point>;
     using OptSize = std::optional<Size>;
 
+    // Paths
+    using Path = std::filesystem::path;
+    using OptPath = std::optional<Path>;
+
+    // Strings
+    using String = std::string;
+    using OptString = std::optional<String>;
+
     enum class Type
     {
         Button,
         Label,
         Image
+    };
+
+    enum class Align
+    {
+        Left,
+        Center,
+        Right
     };
 
     struct Bind
@@ -36,11 +51,12 @@ namespace wxj
     using Bindings = std::vector<Bind>;
     using OptBindings = std::optional<Bindings>;
 
-    // Paths
-    using Path = std::filesystem::path;
-    using OptPath = std::optional<Path>;
+    struct Font
+    {
+        OptString facename = std::nullopt;
+        std::optional<int> height = std::nullopt;
+        std::optional<Align> align = std::nullopt;
+    };
 
-    // Strings
-    using String = std::string;
-    using OptString = std::optional<String>;
+    using OptFont = std::optional<Font>;
 }

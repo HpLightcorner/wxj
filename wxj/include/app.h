@@ -8,6 +8,7 @@
 #include "types.h"
 #include "document.h"
 #include "binding.h"
+#include "callbacks.h"
 
 namespace wxj
 {
@@ -42,10 +43,11 @@ namespace wxj
     private:
         bool OnInit() final;
         wxFrame *m_frame;
+        Bindings m_bindings;
+        std::shared_ptr<Callbacks> m_callbacks;
     };
 
     void registerDocument(Document::Pointer doc);
-    void registerBinding(std::string tag, Binding::WeakPointer b);
     void unregisterDocument(Document::Pointer doc);
 }
 

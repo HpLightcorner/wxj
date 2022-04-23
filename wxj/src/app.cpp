@@ -19,16 +19,7 @@ void wxj::registerDocument(Document::Pointer doc)
 void wxj::unregisterDocument(Document::Pointer doc)
 {
     auto &reg = DocumentRegistry::instance();
-    reg.remove(doc->getTag());  
-}
-
-void wxj::registerBinding(std::string tag, Binding::WeakPointer b)
-{
-    auto &reg = BindingRegistry::instance();
-    auto glue = std::make_shared<Glue>();
-    glue->attach(b);
-
-    reg.add(tag, glue);
+    reg.remove(doc->getTag());
 }
 
 bool App::OnInit()
@@ -71,6 +62,9 @@ bool App::OnInit()
     m_frame = new wxFrame(NULL, wxID_ANY, config.name, config.settings.pos, config.settings.size, style);
     m_frame->SetMinSize(config.settings.size);
     m_frame->SetMaxSize(config.settings.size);
+
+    // Register wxj callbacks and expose them to config.json
+    m_callbacks = std::make_shared<Callbacks>(m_frame);
 
     // Add a custom image panel (background) using sizer
     auto sizer = new wxBoxSizer(wxHORIZONTAL);

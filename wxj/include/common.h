@@ -9,7 +9,7 @@ namespace wxj
         if (std::filesystem::exists(path))
         {
             auto image = wxImage(path.string());
-            auto resized = wxBitmap(image.Scale(size.GetWidth(), size.GetHeight()));
+            auto resized = wxBitmap(image.Scale(size.GetWidth(), size.GetHeight(), wxIMAGE_QUALITY_HIGH));
             return resized;
         }
 

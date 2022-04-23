@@ -121,7 +121,44 @@ void wxjLabel::render(wxDC &dc)
     }
 
     wxRect rect(m_settings.size);
-    dc.DrawLabel(label, rect, wxALIGN_CENTER);
+
+    auto font = dc.GetFont();
+    int align = wxALIGN_CENTER;
+    int height = m_settings.size.GetHeight();
+
+    if (m_settings.font)
+    {
+        auto font_settings = m_settings.font.value();
+        if (font_settings.height)
+        {
+            height = font_settings.height.value();
+        }
+        if (font_settings.facename)
+        {
+            std::string facename = font_settings.facename.value();
+            font.SetFaceName(facename);
+        }
+        if (font_settings.align)
+        {
+            switch (font_settings.align.value())
+            {
+            case Align::Center:
+                align = wxALIGN_CENTER;
+                break;
+            case Align::Left:
+                align = wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT;
+                break;
+            case Align::Right:
+                align = wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT;
+                break;
+            }
+        }
+    }
+
+    font.SetPixelSize(Size(0, height));
+    dc.SetFont(font);
+
+    dc.DrawLabel(label, rect, align);
 }
 
 void wxjLabel::update([[maybe_unused]] std::string tag)

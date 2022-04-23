@@ -13,8 +13,10 @@ namespace wxj
             {
                 bindings = std::nullopt;
                 label = "";
+                font = std::nullopt;
             }
 
+            OptFont font;
             OptBindings bindings;
             std::string label;
             Point pos;
