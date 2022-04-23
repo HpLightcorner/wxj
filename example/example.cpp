@@ -11,14 +11,12 @@ class MyData
 public:
     MyData(std::string name)
     {
-        setenv("CFNETWORK_DIAGNOSTICS", "3", 1);
-
         // Create a new document named data holding a JSON object to interact with the UI
         // Make sure that you are using a unique tag for each document
         m_doc = std::make_shared<wxj::Document>("data");
         auto &json = m_doc->json();
         json["bitcoin"]["usd"] = "NaN";
-        json["timestamp"] = "Unknown";
+        json["timestamp"] = "00-00-0000 00-00-00";
 
         // Register the Document within wxj such that the document can be accessed from the
         // config document. Be careful, registerDocument takes ownership of the document!
