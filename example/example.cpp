@@ -1,17 +1,24 @@
-#include "wxj.h"
+#include <wxj.h>
+#include <cpr/cpr.h>
+
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
 
 class MyData
 {
 public:
     MyData(std::string name)
     {
+        setenv("CFNETWORK_DIAGNOSTICS", "3", 1);
+
         // Create a new document named data holding a JSON object to interact with the UI
         // Make sure that you are using a unique tag for each document
         m_doc = std::make_shared<wxj::Document>("data");
         auto &json = m_doc->json();
-        json["name"] = name;
-        json["counter"] = 0;
-        json["cs2"] = 11;
+        json["bitcoin"]["usd"] = "NaN";
+        json["timestamp"] = "Unknown";
 
         // Register the Document within wxj such that the document can be accessed from the
         // config document. Be careful, registerDocument takes ownership of the document!
@@ -25,19 +32,14 @@ public:
         m_doc.reset();
     }
 
-    int getCounter()
-    {
-        auto &json = m_doc->json();
-        return json["counter"].get<int>();
-    }
-
-    void setCounter(int counter)
+    void setPrice(wxj::Json price, std::string timestamp)
     {
         // Lock for write access
         m_doc->lock();
 
         auto &json = m_doc->json();
-        json["counter"] = counter;
+        json = price;
+        json["timestamp"] = timestamp;
 
         // Unlock before notify
         m_doc->unlock();
@@ -59,18 +61,30 @@ public:
     {
     }
 
+    void updateBitcoinPrice()
+    {
+        auto r = cpr::Get(cpr::Url{"https://api.coingecko.com/api/v3/simple/price"},
+                          cpr::Parameters{{"ids", "bitcoin"}, {"vs_currencies", "usd"}});
+
+        if (r.status_code == 200)
+        {
+            auto t = std::time(nullptr);
+            auto tm = *std::localtime(&t);
+
+            std::ostringstream oss;
+            oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
+            auto timestamp = oss.str();
+
+            m_data.setPrice(wxj::Json::parse(r.text), timestamp);
+        }
+    }
+
     void update(std::string tag) final
     {
-        auto counter = m_data.getCounter();
-        if (tag == "increaseCounter")
+        if (tag == "refresh")
         {
-            counter++;
+            updateBitcoinPrice();
         }
-        if (tag == "decreaseCounter")
-        {
-            counter--;
-        }
-        m_data.setCounter(counter);
     }
 
 protected:
@@ -80,8 +94,10 @@ protected:
         // Be careful that register binding stores a pointer to the binding
         // If you delete the binding (e.g. this class) at runtime, make sure to unregister first
         // Use unique identifiers
-        wxj::registerBinding("increaseCounter", this);
-        wxj::registerBinding("decreaseCounter", this);
+        wxj::registerBinding("refresh", this);
+
+        // Set initial value
+        updateBitcoinPrice();
         return true;
     }
 

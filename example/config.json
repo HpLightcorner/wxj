@@ -1,123 +1,90 @@
 {
     "name": "wxJ Framework",
-
     "settings": {
         "size": {
-            "width": 960,
-            "height": 600
+            "width": 700,
+            "height": 467
         },
-
-        "bg": "./ressources/bg.png",
+        "bg": "./ressources/bg.jpg",
         "frameless": false
     },
-
     "layout": [
         {
-            "type": "label",
+            "type": "button",
+            "bind": "$close",
+            "bg": {
+                "default": "./ressources/close.png",
+                "pressed": "./ressources/close-pressed.png",
+                "current": "./ressources/close-current.png"
+            },
             "pos": {
-                "x": 450,
+                "x": 640,
+                "y": 0
+            },
+            "size": {
+                "width": 60,
+                "height": 60
+            }
+        },
+        {
+            "type": "button",
+            "bind": "refresh",
+            "bg": {
+                "default": "./ressources/refresh.png",
+                "pressed": "./ressources/refresh-pressed.png",
+                "current": "./ressources/refresh-current.png"
+            },
+            "pos": {
+                "x": 642,
                 "y": 60
             },
-            
             "size": {
                 "width": 50,
                 "height": 50
+            }
+        },
+        {
+            "type": "label",
+            "pos": {
+                "x": 0,
+                "y": 410
             },
-
+            "size": {
+                "width": 680,
+                "height": 20
+            },
+            "font": {
+                "align": "right"
+            },
             "bindings": [
                 {
                     "tag": "data",
-                    "pointer": "/counter"
+                    "pointer": "/timestamp"
                 }
             ],
-
             "label": "{}"
         },
         {
             "type": "label",
             "pos": {
-                "x": 100,
-                "y": 60
+                "x": 10,
+                "y": 0
             },
-            
             "size": {
-                "width": 50,
-                "height": 50
+                "width": 630,
+                "height": 60
             },
-
+            "font": {
+                "height": 40,
+                "align": "left"
+            },
             "bindings": [
                 {
                     "tag": "data",
-                    "pointer": "/cs2"
+                    "pointer": "/bitcoin/usd"
                 }
             ],
-
-            "label": "CS2: {}"
-        },
-        {
-            "type": "label",
-            "pos": {
-                "x": 10,
-                "y": 500
-            },
-            
-            "size": {
-                "width": 960,
-                "height": 50
-            },
-
-            "bindings": [
-                {
-                    "tag": "data",
-                    "pointer": "/name"
-                },
-                {
-                    "tag": "data",
-                    "pointer": "/counter"
-                }
-            ],
-
-            "label": "This is a fmt compatible format string, name {}, counter {}"
-        },
-        {
-            "type": "button",
-            "label": "Button 1",
-            "bind": "increaseCounter",
-
-            "bg": {
-                "default": "./ressources/button.png",
-                "pressed": "./ressources/button2.jpg",
-                "current": "./ressources/button3.jpg"
-            },
-
-            "pos": {
-                "x": 450,
-                "y": 10
-            },
-            
-            "size": {
-                "width": 50,
-                "height": 50
-            }
-        },
-        {
-            "type": "button",
-            "label": "Button 2",
-            "bind": "decreaseCounter",
-            "bg": {
-                "default": "./ressources/button.png",
-                "pressed": "./ressources/button2.jpg"
-            },
-
-            "pos": {
-                "x": 10,
-                "y": 10
-            },
-            
-            "size": {
-                "width": 50,
-                "height": 50
-            }
+            "label": "Current Bitcoin Price: {} USD"
         }
     ]
 }

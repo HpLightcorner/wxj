@@ -6,13 +6,12 @@ project(wxj-example)
 #
 # C++ Standard, Compiler Flags
 set(CMAKE_CXX_STANDARD 17)
-
-add_executable(${PROJECT_NAME} example.cpp)
+add_executable(${PROJECT_NAME} WIN32 example.cpp)
 
 #
-# Make sure to use WinMain on Windows
-set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
-target_link_libraries(${PROJECT_NAME} PRIVATE wxj)
+# Additinal dependencies
+add_subdirectory(cpr)
+target_link_libraries(${PROJECT_NAME} PRIVATE wxj cpr)
 
 #
 # Build directly in example folder such that ressources can be found when debugging
