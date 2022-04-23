@@ -1,14 +1,16 @@
 # wxJ - using JSON to build simple UIs
 
+wxJ is a proof of concept for a low-code UI framework.
 Build beatiful GUIs using pictures and absolute positioning!
 
 This library aims to dramatically simplify building user interfaces.
-The library does not support resizing and it only uses pictures and text elements.
+The library does not support dynamic resizing and it only uses pictures and text elements.
 A simple JSON file describes all UI elements and links them to functions and data.
 
 ## But why?
-wxJ started as a proof of concept framework to rapidly build simple UIs for industrial control, focusing touchscreens.
-wxJ gives a system that radidply adapts to new requirements while still delivering a beatiful user experience.
+wxJ is a proof of concept low/no-code UI framework to rapidly build simple UIs, focusing on touchscreens.
+wxJ allows developers to radidply adapt to new requirements while still delivering a beatiful user experience.
+Without recompiling the application, you can change the look and feel of your app.
 wxJ allows you, the developer, to focus on the functionality of your code and not on the boundaries of a platform specific UX/UI framwork.
 
 ## Workflow
@@ -17,13 +19,6 @@ wxJ allows you, the developer, to focus on the functionality of your code and no
 - Finally, write your code and expose functions and data to the config.json file through simple tags
 
 To get started, have a look at the example app.
-
-
-## GUI Elements
-The library exposes a limited set of GUI elements.
-
-### Buttons
-Add Buttons to interact with your program.
 
 ## Why not using HTML and CSS?
 HTML and CSS are great tools, but someone has to learn them. There are so many options to solve a problem.
@@ -42,4 +37,4 @@ Do not use the library if:
 - Your display is going to change regularly and you need to rescale things very often
 - You need features from CSS, JavaScript and HTML
 - You are familiar with wxWidgets or other frameworks (however, wxWidgets can still be used to extend wxJ functionality)
-- You do not want to expose pictures to customers on your filesystem (wxJ loads all pictures from a the drive)
+- You do not want to expose pictures to customers on your filesystem (wxJ loads all pictures from the drive at runtime)
