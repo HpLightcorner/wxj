@@ -1,4 +1,5 @@
 #include "binding.h"
+using namespace wxj;
 
 void wxj::registerBinding(std::string tag, Binding::WeakPointer b)
 {

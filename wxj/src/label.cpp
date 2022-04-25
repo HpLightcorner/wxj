@@ -12,9 +12,16 @@ EVT_PAINT(wxjLabel::paintEvent)
 EVT_SIZE(wxjLabel::OnSize)
 END_EVENT_TABLE()
 
-wxjLabel::wxjLabel(wxWindow *parent, Settings settings) : wxWindow(parent, wxID_ANY),
+wxjLabel::wxjLabel(wxWindow *parent, Settings settings) : wxWindow(),
                                                           m_settings(settings)
 {
+    // Make sure to take full control over paint/erase events
+    SetBackgroundStyle(wxBG_STYLE_PAINT);
+
+    // Create a transparent window
+    Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTRANSPARENT_WINDOW);
+    
+    // Set common properties
     SetPosition(m_settings.pos);
     SetSize(m_settings.size);
 
@@ -73,6 +80,10 @@ void wxjLabel::paintNow()
 
 void wxjLabel::render(wxDC &dc)
 {
+    // Clear context
+    dc.SetBackground(*wxTRANSPARENT_BRUSH);
+    dc.Clear();
+
     std::string label = m_settings.label;
 
     // Try to get bindings from documents
@@ -153,8 +164,18 @@ void wxjLabel::render(wxDC &dc)
                 break;
             }
         }
-    }
 
+        switch (font_settings.color)
+        {
+        case Color::White:
+            dc.SetTextForeground(*wxWHITE);
+            break;
+        case Color::Black:
+            dc.SetTextForeground(*wxBLACK);
+            break;
+        }
+    }
+    
     font.SetPixelSize(Size(0, height));
     dc.SetFont(font);
 

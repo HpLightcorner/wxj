@@ -41,6 +41,12 @@ namespace wxj
         Right
     };
 
+    enum class Color
+    {
+        Black,
+        White
+    };
+
     struct Bind
     {
         std::string tag;
@@ -56,6 +62,7 @@ namespace wxj
         OptString facename = std::nullopt;
         std::optional<int> height = std::nullopt;
         std::optional<Align> align = std::nullopt;
+        Color color = Color::Black;
     };
 
     using OptFont = std::optional<Font>;

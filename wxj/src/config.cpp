@@ -29,6 +29,9 @@ namespace wxj
                                          {Align::Center, "center"},
                                          {Align::Right, "right"}})
 
+    NLOHMANN_JSON_SERIALIZE_ENUM(Color, {{Color::Black, "black"},
+                                         {Color::White, "white"}})
+
     void from_json(const Json &j, wxj::Bind &b)
     {
         j.at("tag").get_to(b.tag);
@@ -115,6 +118,10 @@ namespace wxj
         if (j.contains("align"))
         {
             f.align = j.at("align").get<Align>();
+        }
+        if (j.contains("color"))
+        {
+            f.color = j.at("color").get<Color>();
         }
     }
 

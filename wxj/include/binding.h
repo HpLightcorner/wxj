@@ -3,6 +3,9 @@
 #include "observer.h"
 #include "registry.h"
 
+#include <memory>
+#include <string>
+
 namespace wxj
 {
     using Binding = IObserver<std::string>;

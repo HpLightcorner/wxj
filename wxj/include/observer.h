@@ -2,6 +2,7 @@
 
 #include <list>
 #include <algorithm>
+#include <stdexcept>
 
 namespace wxj
 {

@@ -14,10 +14,16 @@ EVT_PAINT(wxjButton::paintEvent)
 
 END_EVENT_TABLE()
 
-wxjButton::wxjButton(wxWindow *parent, Settings settings) : wxWindow(parent, wxID_ANY),
+wxjButton::wxjButton(wxWindow *parent, Settings settings) : wxWindow(),
                                                             m_settings(settings),
                                                             m_state(State::Default)
 {
+    // Make sure to take full control over paint/erase events
+    SetBackgroundStyle(wxBG_STYLE_PAINT);
+
+    // Create a transparent window
+    Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTRANSPARENT_WINDOW);
+    
     SetPosition(m_settings.pos);
     SetSize(m_settings.size);
 
@@ -57,6 +63,10 @@ void wxjButton::paintNow()
 
 void wxjButton::render(wxDC &dc)
 {
+    // Clear context
+    dc.SetBackground(*wxTRANSPARENT_BRUSH);
+    dc.Clear();
+
     wxBitmap bitmap = m_default.value();
     switch (m_state)
     {
