@@ -2,6 +2,8 @@
 #include "common.h"
 #include "binding.h"
 
+#include <thread>
+
 using namespace wxj;
 
 BEGIN_EVENT_TABLE(wxjButton, wxPanel)
@@ -57,16 +59,13 @@ void wxjButton::paintEvent([[maybe_unused]] wxPaintEvent &evt)
 
 void wxjButton::paintNow()
 {
-    wxClientDC dc(this);
-    render(dc);
+    // Refresh Background to allow transparent buttons/images with alpha channel
+    auto rect = wxRect(m_settings.pos, m_settings.size);
+    GetParent()->Refresh(false, &rect);
 }
 
 void wxjButton::render(wxDC &dc)
 {
-    // Clear context
-    dc.SetBackground(*wxTRANSPARENT_BRUSH);
-    dc.Clear();
-
     wxBitmap bitmap = m_default.value();
     switch (m_state)
     {
@@ -146,7 +145,12 @@ void wxjButton::onButtonEvent()
 
         if (binding)
         {
-            binding.value()->notify(tag);
+            // Execute notify in detached thread
+            std::thread t([binding, tag]() {
+                binding.value()->notify(tag);
+            });
+            
+            t.detach();
         }
     }
 }

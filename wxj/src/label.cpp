@@ -1,5 +1,6 @@
 #include "label.h"
 #include "document.h"
+#include "imagepanel.h"
 
 #include "fmt/core.h"
 #include "fmt/format.h"
@@ -80,10 +81,6 @@ void wxjLabel::paintNow()
 
 void wxjLabel::render(wxDC &dc)
 {
-    // Clear context
-    dc.SetBackground(*wxTRANSPARENT_BRUSH);
-    dc.Clear();
-
     std::string label = m_settings.label;
 
     // Try to get bindings from documents
@@ -184,5 +181,7 @@ void wxjLabel::render(wxDC &dc)
 
 void wxjLabel::update([[maybe_unused]] std::string tag)
 {
-    Refresh();
+    // Refresh parent to allow transparent text on windows
+    auto rect = wxRect(m_settings.pos, m_settings.size);
+    GetParent()->Refresh(false, &rect);
 }
