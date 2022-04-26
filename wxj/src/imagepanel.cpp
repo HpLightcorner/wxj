@@ -55,7 +55,17 @@ void wxjImagePanel::render(wxDC &dc)
         }
         else
         {
-            dc.DrawBitmap(m_resized, 0, 0, false);
+            auto region = GetUpdateRegion();
+            if (region.IsOk())
+            {
+                auto rect = region.GetBox();
+                auto submap = m_resized.GetSubBitmap(rect);
+                dc.DrawBitmap(submap, rect.GetTopLeft());
+            }
+            else
+            {
+                dc.DrawBitmap(m_resized, 0, 0, false);
+            }
         }
     }
 }

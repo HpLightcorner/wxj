@@ -145,11 +145,20 @@ void wxjButton::onButtonEvent()
 
         if (binding)
         {
-            // Execute notify in detached thread
-            std::thread t([binding, tag]()
-                          { binding.value()->notify(tag); });
+            binding.value()->notify(tag);
 
-            t.detach();
+            // Withing notify, wxWidgets GUI elements might get called
+            // to refresh the disaply. However, Refresh() can only be 
+            // called from the main thread. So, instead of spawning
+            // a worker thread, simply call notify from the main thread
+            // a future workaround should include some kind of event handler
+
+            
+            // Execute notify in detached thread
+            //std::thread t([binding, tag]()
+            //              { binding.value()->notify(tag); });
+
+            //t.detach();
         }
     }
 }
