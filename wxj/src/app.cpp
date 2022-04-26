@@ -60,8 +60,7 @@ bool App::OnInit()
 
     // The Frame
     m_frame = new wxFrame(NULL, wxID_ANY, config.name, config.settings.pos, config.settings.size, style);
-    m_frame->SetMinSize(config.settings.size);
-    m_frame->SetMaxSize(config.settings.size);
+    m_frame->SetClientSize(config.settings.size);
 
     // Register wxj callbacks and expose them to config.json
     m_callbacks = std::make_shared<Callbacks>(m_frame);

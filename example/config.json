@@ -2,8 +2,8 @@
     "name": "wxJ Framework",
     "settings": {
         "size": {
-            "width": 715,
-            "height": 475
+            "width": 700,
+            "height": 450
         },
         "bg": "./ressources/bg.jpg",
         "frameless": false
