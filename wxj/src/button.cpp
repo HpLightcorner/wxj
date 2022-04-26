@@ -25,7 +25,7 @@ wxjButton::wxjButton(wxWindow *parent, Settings settings) : wxWindow(),
 
     // Create a transparent window
     Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTRANSPARENT_WINDOW);
-    
+
     SetPosition(m_settings.pos);
     SetSize(m_settings.size);
 
@@ -146,10 +146,9 @@ void wxjButton::onButtonEvent()
         if (binding)
         {
             // Execute notify in detached thread
-            std::thread t([binding, tag]() {
-                binding.value()->notify(tag);
-            });
-            
+            std::thread t([binding, tag]()
+                          { binding.value()->notify(tag); });
+
             t.detach();
         }
     }

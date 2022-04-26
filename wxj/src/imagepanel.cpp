@@ -1,12 +1,12 @@
 #include "imagepanel.h"
 using namespace wxj;
 
-BEGIN_EVENT_TABLE(wxj::wxjImagePanel, wxPanel)
-EVT_PAINT(wxj::wxjImagePanel::paintEvent)
-EVT_SIZE(wxj::wxjImagePanel::OnSize)
+BEGIN_EVENT_TABLE(wxjImagePanel, wxPanel)
+EVT_PAINT(wxjImagePanel::paintEvent)
+EVT_SIZE(wxjImagePanel::onSize)
 END_EVENT_TABLE()
 
-wxjImagePanel::wxjImagePanel(wxFrame *parent, std::optional<std::filesystem::path> image) : wxPanel(parent)
+wxjImagePanel::wxjImagePanel(wxFrame *parent, std::optional<std::filesystem::path> image) : wxPanel()
 {
     if (image)
     {
@@ -19,6 +19,12 @@ wxjImagePanel::wxjImagePanel(wxFrame *parent, std::optional<std::filesystem::pat
 
     m_w = -1;
     m_h = -1;
+
+    SetBackgroundStyle(wxBG_STYLE_PAINT);
+    Create(parent, wxID_ANY);
+
+    // Make sure to double-buffer (for Windows)
+    SetDoubleBuffered(true);
 }
 
 void wxjImagePanel::paintEvent([[maybe_unused]] wxPaintEvent &evt)
@@ -27,16 +33,10 @@ void wxjImagePanel::paintEvent([[maybe_unused]] wxPaintEvent &evt)
     render(dc);
 }
 
-void wxjImagePanel::OnSize(wxSizeEvent &event)
+void wxjImagePanel::onSize([[maybe_unused]] wxSizeEvent &event)
 {
     Refresh();
     event.Skip();
-}
-
-void wxjImagePanel::paintNow()
-{
-    wxClientDC dc(this);
-    render(dc);
 }
 
 void wxjImagePanel::render(wxDC &dc)

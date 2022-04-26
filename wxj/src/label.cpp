@@ -21,7 +21,7 @@ wxjLabel::wxjLabel(wxWindow *parent, Settings settings) : wxWindow(),
 
     // Create a transparent window
     Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTRANSPARENT_WINDOW);
-    
+
     // Set common properties
     SetPosition(m_settings.pos);
     SetSize(m_settings.size);
@@ -172,7 +172,7 @@ void wxjLabel::render(wxDC &dc)
             break;
         }
     }
-    
+
     font.SetPixelSize(Size(0, height));
     dc.SetFont(font);
 
