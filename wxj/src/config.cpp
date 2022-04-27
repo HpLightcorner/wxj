@@ -1,13 +1,41 @@
 #include "config.h"
 #include <fstream>
 
+namespace {
+    // File private helpers to keep client size
+    wxj::Size csize;
+}
+
+int to_pixel(const wxj::Json &j, int base)
+{
+    if (j.is_number())
+    {
+        return j.get<int>();
+    }
+
+    auto str = j.get<std::string>();
+    if (str.find("%") != std::string::npos)
+    {
+        // Given in percent of base
+        auto factor = std::stod(str) / 100;
+        return base * factor;
+    }
+    else if (str.find("px") != std::string::npos)
+    {
+        // Given in pixel, no conversion needed
+        return std::stoi(str);
+    }
+    else
+    {
+        // Assume already given in pixel
+        return std::stoi(str);
+    }
+}
+
 void from_json(const wxj::Json &j, wxSize &s)
 {
-    int width;
-    int height;
-
-    j.at("width").get_to(width);
-    j.at("height").get_to(height);
+    int width = to_pixel(j.at("width"), csize.GetWidth());
+    int height = to_pixel(j.at("height"), csize.GetHeight());
 
     s.SetWidth(width);
     s.SetHeight(height);
@@ -15,8 +43,8 @@ void from_json(const wxj::Json &j, wxSize &s)
 
 void from_json(const wxj::Json &j, wxPoint &p)
 {
-    j.at("x").get_to(p.x);
-    j.at("y").get_to(p.y);
+    p.x = to_pixel(j.at("x"), csize.GetWidth());
+    p.y = to_pixel(j.at("y"), csize.GetHeight());
 }
 
 namespace wxj
@@ -56,7 +84,11 @@ namespace wxj
 
         if (j.contains("size"))
         {
-            s.size = j.at("size").get<wxj::Size>();
+            // Width must always be given in pixel
+            s.size.SetWidth(j["size"]["width"].get<int>());
+
+            // Height can be given in percent of width or pixel
+            s.size.SetHeight(to_pixel(j["size"]["height"], s.size.GetWidth()));
         }
 
         if (j.contains("bg"))
@@ -174,14 +206,12 @@ namespace wxj
         {
             j.at("name").get_to(c.name);
         }
-        if (j.contains("settings"))
-        {
-            j.at("settings").get_to(c.settings);
-        }
-        if (j.contains("layout"))
-        {
-            j.at("layout").get_to(c.layout);
-        }
+        j.at("settings").get_to(c.settings);
+
+        // capture client size to calculate layout if needed
+        csize = c.settings.size;
+
+        j.at("layout").get_to(c.layout);
     }
 }
 
@@ -192,7 +222,9 @@ std::optional<wxj::Config> wxj::fromFile(std::filesystem::path path)
         try
         {
             std::ifstream file(path);
-            Json j = Json::parse(file);
+
+            // Enable JSON comments
+            Json j = Json::parse(file, nullptr, true, true);
 
             return j.get<Config>();
         }

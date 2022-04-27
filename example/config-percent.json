@@ -1,0 +1,96 @@
+{
+    "name": "wxJ Framework",
+    "settings": {
+        "size": {
+            // Width must always be given in pixel: 700, "700" or "700px"
+            "width": 700,
+            // Height can either be given in pixel, or percent of width
+            "height": "60%"
+        },
+        "bg": "./ressources/bg.jpg",
+        "frameless": false
+    },
+    "layout": [
+        {
+            "type": "button",
+            "bind": "$close",
+            "bg": {
+                "default": "./ressources/close.png",
+                "pressed": "./ressources/close-pressed.png",
+                "current": "./ressources/close-current.png"
+            },
+            "pos": {
+                // Position can be given in percent from client size (always starting top left)
+                // Or as an absolut value in pixel
+                "x": "90%",
+                "y": "1%"
+            },
+            "size": {
+                // Size can be given in Percent from client (window) size
+                "width": "8.5%",
+                "height": "13.3%"
+            }
+        },
+        {
+            "type": "button",
+            "bind": "$reload",
+            "bg": {
+                "default": "./ressources/refresh.png",
+                "pressed": "./ressources/refresh-pressed.png",
+                "current": "./ressources/refresh-current.png"
+            },
+            "pos": {
+                "x": "90.5%",
+                "y": "14.5%"
+            },
+            "size": {
+                "width": "7.5%",
+                "height": "11.5%"
+            }
+        },
+        {
+            "type": "label",
+            "pos": {
+                "x": "0%",
+                "y": "94%"
+            },
+            "size": {
+                "width": "98%",
+                "height": "4.5%"
+            },
+            "font": {
+                "align": "right",
+                "color": "white"
+            },
+            "bindings": [
+                {
+                    "tag": "data",
+                    "pointer": "/timestamp"
+                }
+            ],
+            "label": "{}"
+        },
+        {
+            "type": "label",
+            "pos": {
+                "x": "1.5%",
+                "y": "1.5%"
+            },
+            "size": {
+                "width": "90%",
+                "height": "9.5%"
+            },
+            "font": {
+                "align": "left",
+                "color": "white"
+            },
+            "bindings": [
+                {
+                    "tag": "data",
+                    "pointer": "/bitcoin/usd"
+                }
+            ],
+            "label": "Current Bitcoin Price: {} USD"
+        }
+    ]
+}
