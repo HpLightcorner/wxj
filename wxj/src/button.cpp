@@ -66,7 +66,8 @@ void wxjButton::paintNow()
 
 void wxjButton::render(wxDC &dc)
 {
-    wxBitmap bitmap = m_default.value();
+    wxBitmap bitmap;
+    
     switch (m_state)
     {
     case State::Default:
