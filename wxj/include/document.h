@@ -31,4 +31,7 @@ namespace wxj
     };
 
     using DocumentRegistry = Registry<std::shared_ptr<Document>>;
+    
+    void registerDocument(Document::Pointer doc);
+    void unregisterDocument(Document::Pointer doc);
 }

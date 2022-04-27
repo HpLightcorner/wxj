@@ -31,6 +31,11 @@ namespace wxj
             bool frameless;
         };
 
+        App();
+        bool createFrame();
+        bool resetFrame();
+        wxFrame *getFrame();
+
     protected:
         /**
          * @brief Application Entry Point
@@ -46,9 +51,6 @@ namespace wxj
         Bindings m_bindings;
         std::shared_ptr<Callbacks> m_callbacks;
     };
-
-    void registerDocument(Document::Pointer doc);
-    void unregisterDocument(Document::Pointer doc);
 }
 
 #define WXJ_IMPLEMENT_APP(app) wxIMPLEMENT_APP(app)

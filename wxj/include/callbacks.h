@@ -4,13 +4,14 @@
 
 namespace wxj
 {
+    class App;
     class Callbacks : public Binding
     {
     public:
-        Callbacks(wxFrame *frame);
+        Callbacks(App *app);
         void update(std::string tag) final;
 
     private:
-        wxFrame *m_frame;
+        App *m_app;
     };
 }

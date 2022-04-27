@@ -2,6 +2,18 @@
 #include <algorithm>
 using namespace wxj;
 
+void wxj::registerDocument(Document::Pointer doc)
+{
+    auto &reg = DocumentRegistry::instance();
+    reg.add(doc->getTag(), doc);
+}
+
+void wxj::unregisterDocument(Document::Pointer doc)
+{
+    auto &reg = DocumentRegistry::instance();
+    reg.remove(doc->getTag());
+}
+
 Document::Document(String tag) : m_tag(tag)
 {
 }
