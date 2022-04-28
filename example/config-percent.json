@@ -33,7 +33,7 @@
         },
         {
             "type": "button",
-            "bind": "$reload",
+            "bind": "refresh",
             "bg": {
                 "default": "./ressources/refresh.png",
                 "pressed": "./ressources/refresh-pressed.png",
@@ -46,6 +46,18 @@
             "size": {
                 "width": "7.5%",
                 "height": "11.5%"
+            }
+        },
+        {
+            "type": "button",
+            "bind": "$reload",
+            "pos": {
+                "x": 0,
+                "y": 0
+            },
+            "size": {
+                "width": 150,
+                "height": 150
             }
         },
         {
